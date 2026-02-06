@@ -360,6 +360,7 @@ struct ImageSource {
 
 // MemoryReader support
 extension ImageSource: MemoryReader {
+  @_optimize(none)
   public func fetch(from address: Address,
                     into buffer: UnsafeMutableRawBufferPointer) throws {
     let offset = Int(address)
