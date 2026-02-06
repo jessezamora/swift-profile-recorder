@@ -52,6 +52,17 @@ let package = Package(
                 .product(name: "Logging", package: "swift-log"),
             ]
         ),
+        .executableTarget(
+            name: "swipr-test-dwarf",
+            dependencies: [
+                "ProfileRecorder",
+                "ProfileRecorderServer",
+                "ProfileRecorderHelpers",
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+                .product(name: "NIO", package: "swift-nio"),
+                .product(name: "Logging", package: "swift-log"),
+            ]
+        ),
         .target(
             name: "_ProfileRecorderSampleConversion",
             dependencies: [
