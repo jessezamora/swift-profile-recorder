@@ -162,6 +162,7 @@ internal struct LockedELFSourceCacheReference: @unchecked /* the ElfImage types 
             var elfImage: AnyElfImage? = elfSourceCache[library.path]
             if elfImage == nil {
                 if let source = try? ImageSource(path: library.path) {
+                    print("Trying to read image source at \(library.path)")
                     if let image = try? Elf64Image(source: source) {
                         elfImage = .elf64(image)
                     } else if let image = try? Elf32Image(source: source) {
