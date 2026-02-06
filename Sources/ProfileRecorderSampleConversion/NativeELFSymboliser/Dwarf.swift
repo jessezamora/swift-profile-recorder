@@ -673,7 +673,7 @@ struct DwarfReader<S: DwarfSource & AnyObject> {
       // .2 version
       let version = Int(maybeSwap(try cursor.read(as: SWIPR_Dwarf_Half.self)))
 
-      if version < 3 || version > 5 {
+      if version < 2 || version > 5 {
         throw DwarfError.unsupportedVersion(version)
       }
 
@@ -704,7 +704,7 @@ struct DwarfReader<S: DwarfSource & AnyObject> {
 
         dieBounds = Bounds(base: cursor.pos, size: next - cursor.pos)
       } else {
-        if version >= 3 && version <= 4 {
+        if version >= 2 && version <= 4 {
           // .3 debug_abbrev_offset
           abbrevOffset = Address(maybeSwap(try cursor.read(as: SWIPR_Dwarf_Word.self)))
 
@@ -836,7 +836,7 @@ struct DwarfReader<S: DwarfSource & AnyObject> {
       // .2 version
       let version = Int(maybeSwap(try cursor.read(as: SWIPR_Dwarf_Half.self)))
 
-      if version < 3 || version > 5 {
+      if version < 2 || version > 5 {
         cursor.pos = nextOffset
         continue
       }
@@ -893,7 +893,7 @@ struct DwarfReader<S: DwarfSource & AnyObject> {
       var dirNames: [String] = []
       var fileInfo: [DwarfFileInfo] = []
 
-      if version == 3 || version == 4 {
+      if version >= 2 && version <= 4 {
         // .11 include_directories
 
         // Prior to version 5, the compilation directory is not included; put
