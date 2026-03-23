@@ -434,17 +434,22 @@ extension ImageSource: MemoryReader {
     let offset = Int(address)
     guard bytes.count >= buffer.count &&
             offset <= bytes.count - buffer.count else {
-      throw ImageSourceError.outOfBoundsRead
+      try throwOutOfBoundsRead()
     }
     buffer.copyMemory(from: UnsafeRawBufferPointer(
                         rebasing: bytes[offset..<offset + buffer.count]))
+  }
+
+  @inline(never)
+  private func throwOutOfBoundsRead() throws -> Never {
+    throw ImageSourceError.outOfBoundsRead
   }
 
   public func fetch<T>(from address: Address, as type: T.Type) throws -> T {
     let size = MemoryLayout<T>.size
     let offset = Int(address)
     guard offset <= bytes.count - size else {
-      throw ImageSourceError.outOfBoundsRead
+      try throwOutOfBoundsRead()
     }
     return bytes.loadUnaligned(fromByteOffset: offset, as: type)
   }
